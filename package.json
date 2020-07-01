@@ -51,7 +51,7 @@
     "test:tdd": "npm run test:unit -- --watch",
     "lint": "eslint --ignore-path .gitignore src/**/*.ts",
     "lint:fix": "eslint --ignore-path .gitignore --fix",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "husky": {
     "hooks": {
