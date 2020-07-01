@@ -66,5 +66,8 @@
     "*.json": [
       "git add --force"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
