@@ -22,7 +22,7 @@ $ npm install -S @team-choco/xiv
 ```
 
 ```js
-import { XIV } from '@team-choco/xiv';
+import { XIV, getPoweredBy } from '@team-choco/xiv';
 
 const xiv = new XIV({
   xivapi: '<token-here>',
@@ -33,7 +33,14 @@ xiv.characters.search({
   server: 'Famfrit',
 }).then((response) => {
   console.log(response);
-})
+});
+
+console.log(getPoweredBy(xiv.characters.search));
+// ~~ Output ~~
+// {
+//   name: 'xivapi',
+//   url: 'https://xivapi.com',
+// }
 ```
 
 [npm-version-image]: https://img.shields.io/npm/v/@team-choco/xiv.svg?style=flat
