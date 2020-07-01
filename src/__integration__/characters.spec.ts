@@ -1,5 +1,6 @@
+import { Arrays } from '@team-choco/utils';
+
 import { Characters } from '../characters';
-import { Arrays } from '../utils/arrays';
 
 const characters = new Characters();
 

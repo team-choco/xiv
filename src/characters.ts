@@ -1,8 +1,9 @@
+import { Fetch } from '@team-choco/utils';
+
 import { PaginatedResponse, Servers, DataCenters } from './types';
 
 import { Base } from './base';
 import { PoweredByXIVAPI } from './decorators/powered-by';
-import { Fetch } from './utils/fetch';
 
 export class Characters extends Base {
   private server(server?: Servers, dataCenter?: DataCenters): (null|string) {

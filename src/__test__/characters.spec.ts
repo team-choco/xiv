@@ -1,15 +1,16 @@
+import { Fetch } from '@team-choco/utils';
+
 import { getPoweredBy } from '../decorators/powered-by';
 
 import { Characters } from '../characters';
-import { chance } from '../utils/__test__/chance';
+import { chance } from '../__test__/utils/chance';
 
-import { Fetch } from '../utils/fetch';
-import { mockPaginatedResponse } from '../utils/__test__/mock';
+import { mockPaginatedResponse } from '../__test__/utils/mock';
 import { Servers, DataCenters } from '../types';
 
 const characters = new Characters();
 
-jest.mock('../utils/fetch');
+jest.mock('@team-choco/utils');
 
 describe('Class(Characters)', () => {
   describe('func(search)', () => {
