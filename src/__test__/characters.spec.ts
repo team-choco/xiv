@@ -1,8 +1,15 @@
 import { getPoweredBy } from '../decorators/powered-by';
 
 import { Characters } from '../characters';
+import { chance } from '../utils/__test__/chance';
+
+import { Fetch } from '../utils/fetch';
+import { mockPaginatedResponse } from '../utils/__test__/mock';
+import { Servers, DataCenters } from '../types';
 
 const characters = new Characters();
+
+jest.mock('../utils/fetch');
 
 describe('Class(Characters)', () => {
   describe('func(search)', () => {
@@ -13,21 +20,151 @@ describe('Class(Characters)', () => {
       });
     });
 
-    it('should return a list of characters', async () => {
-      const { Results } = await characters.search({
-        name: 'Flora Bunny',
-        server: 'Leviathan',
+    it('should return the results', async () => {
+      const name = chance.string();
+
+      const expectedResponse = mockPaginatedResponse<Characters.SearchResult>([{
+        Avatar: chance.string(),
+        ID: 0,
+        Name: name,
+        Lang: 'EN',
+        Server: 'Famfrit (Primal)',
+      }]);
+
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+
+      const results = await characters.search({
+        name,
       });
 
-      expect(Results).toHaveLength(1);
+      expect(results).toStrictEqual(expectedResponse);
 
-      const [result] = Results;
+      expect(Fetch).toBeCalledTimes(1);
+      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+        query: {
+          name: name,
+          server: null,
+          page: null,
+        },
+      });
+    });
 
-      expect(result.Avatar).toBeTruthy();
-      expect(result.ID).toEqual(9933602);
-      expect(result.Name).toEqual('Flora Bunny');
-      expect(result.Lang).toEqual('EN');
-      expect(result.Server).toEqual('Leviathan (Primal)');
+    it('should support providing a server', async () => {
+      const expectedName = chance.string();
+      const expectedServer: Servers = 'Famfrit';
+
+      const expectedResponse = mockPaginatedResponse<Characters.SearchResult>([{
+        Avatar: chance.string(),
+        ID: 0,
+        Name: expectedName,
+        Lang: 'EN',
+        Server: 'Famfrit (Primal)',
+      }]);
+
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+
+      const results = await characters.search({
+        name: expectedName,
+        server: expectedServer,
+      });
+
+      expect(results).toStrictEqual(expectedResponse);
+
+      expect(Fetch).toBeCalledTimes(1);
+      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+        query: {
+          name: expectedName,
+          server: expectedServer,
+          page: null,
+        },
+      });
+    });
+
+    it('should support providing a data center', async () => {
+      const name = chance.string();
+      const expectedDataCenter: DataCenters = 'Primal';
+
+      const expectedResponse = mockPaginatedResponse<Characters.SearchResult>([{
+        Avatar: chance.string(),
+        ID: 0,
+        Name: name,
+        Lang: 'EN',
+        Server: 'Famfrit (Primal)',
+      }]);
+
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+
+      const results = await characters.search({
+        name,
+        dataCenter: expectedDataCenter,
+      });
+
+      expect(results).toStrictEqual(expectedResponse);
+
+      expect(Fetch).toBeCalledTimes(1);
+      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+        query: {
+          name: name,
+          server: `_dc_${expectedDataCenter}`,
+          page: null,
+        },
+      });
+    });
+
+    it('should support providing a page number', async () => {
+      const name = chance.string();
+      const expectedPageNumber = chance.integer({ min: 0 });
+
+      const expectedResponse = mockPaginatedResponse<Characters.SearchResult>([{
+        Avatar: chance.string(),
+        ID: 0,
+        Name: name,
+        Lang: 'EN',
+        Server: 'Famfrit (Primal)',
+      }]);
+
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+
+      const results = await characters.search({
+        name,
+        page: expectedPageNumber,
+      });
+
+      expect(results).toStrictEqual(expectedResponse);
+
+      expect(Fetch).toBeCalledTimes(1);
+      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+        query: {
+          name: name,
+          server: null,
+          page: expectedPageNumber,
+        },
+      });
+    });
+
+    it('should ignore extra properties', async () => {
+      const name = chance.string();
+
+      const expectedResults: Characters.SearchResult[] = [{
+        Avatar: chance.string(),
+        ID: 0,
+        Name: name,
+        Lang: 'EN',
+        Server: 'Famfrit (Primal)',
+      }];
+
+      const expectedResponse = mockPaginatedResponse(expectedResults);
+
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(mockPaginatedResponse(expectedResults.map((result) => ({
+        ...result,
+        Rank: chance.string(),
+      }))));
+
+      const results = await characters.search({
+        name,
+      });
+
+      expect(results).toStrictEqual(expectedResponse);
     });
   });
 
@@ -39,15 +176,33 @@ describe('Class(Characters)', () => {
       });
     });
 
-    it('should a given character', async () => {
-      const character = await characters.get(9933602);
+    it('should return a specific characters information', async () => {
+      const expectedResponse: Characters.GetApiResponse = {
+        Character: {
+          Avatar: chance.string(),
+          ID: chance.integer(),
+          Bio: chance.string(),
+          Race: chance.integer(),
+          Gender: chance.integer(),
+          Server: 'Famfrit',
+        },
+      };
 
-      expect(character.ID).toEqual(9933602);
-      expect(character.Avatar).toBeTruthy();
-      expect(character.Bio).toBeTruthy();
-      expect(character.Race).toEqual(3);
-      expect(character.Gender).toEqual(2);
-      expect(character.Server).toEqual('Leviathan');
+      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+
+      const results = await characters.get(expectedResponse.Character.ID);
+
+      expect(results).toStrictEqual({
+        Avatar: expectedResponse.Character.Avatar,
+        ID: expectedResponse.Character.ID,
+        Bio: expectedResponse.Character.Bio,
+        Race: expectedResponse.Character.Race,
+        Gender: expectedResponse.Character.Gender,
+        Server: expectedResponse.Character.Server,
+      } as Characters.GetResponse);
+
+      expect(Fetch).toBeCalledTimes(1);
+      expect(Fetch).toBeCalledWith(`https://xivapi.com/character/${expectedResponse.Character.ID}`);
     });
   });
 });

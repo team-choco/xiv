@@ -1,10 +1,15 @@
-import { PaginatedResponse, Servers } from './types';
+import { PaginatedResponse, Servers, DataCenters } from './types';
 
 import { Base } from './base';
 import { PoweredByXIVAPI } from './decorators/powered-by';
 import { Fetch } from './utils/fetch';
 
 export class Characters extends Base {
+  private server(server?: Servers, dataCenter?: DataCenters): (null|string) {
+    if (server) return server;
+    else if (dataCenter) return `_dc_${dataCenter}`;
+    return null;
+  }
   /**
    * Searches for characters given a set of criteria.
    *
@@ -13,11 +18,12 @@ export class Characters extends Base {
    */
   @PoweredByXIVAPI
   async search(options: Characters.SearchOptions): Promise<Characters.SearchResponse> {
+
     const response = await Fetch<Characters.SearchResponse>('https://xivapi.com/character/search', {
       query: {
         name: options.name,
-        server: options.server,
-        page: options.page,
+        server: this.server(options.server, options.dataCenter),
+        page: options.page || null,
       },
     });
 
@@ -60,8 +66,26 @@ export class Characters extends Base {
 
 export declare namespace Characters {
   interface SearchOptions {
+    /**
+     * The name of the character.
+     */
     name: string;
+
+    /**
+     * The server the character belongs to.
+     *
+     * _This value takes precedence over dataCenter_
+     */
     server?: Servers;
+
+    /**
+     * The data center the character belongs to.
+     */
+    dataCenter?: DataCenters;
+
+    /**
+     * The page number to request.
+     */
     page?: number;
   }
 

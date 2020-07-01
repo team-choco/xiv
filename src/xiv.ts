@@ -2,9 +2,9 @@ import { Characters } from './characters';
 import { XIVOptions } from './types';
 
 export class XIV {
-  public character: Characters;
+  public characters: Characters;
 
-  constructor(options: XIVOptions) {
-    this.character = new Characters(options);
+  constructor(options: XIVOptions = {}) {
+    this.characters = new Characters(options);
   }
 }

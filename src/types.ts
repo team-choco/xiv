@@ -4,46 +4,48 @@ export interface XIVOptions {
    *
    * @see https://xivapi.com
    */
-  xivapi?: string;
+  xivapi?: (null|string);
+}
+
+export interface Pagination {
+  /**
+   * The current page number.
+   */
+  Page: number;
+
+  /**
+   * The next page number.
+   */
+  PageNext: (null|number);
+
+  /**
+   * The previous page number.
+   */
+  PagePrev: (null|number);
+
+  /**
+   * The total number of pages.
+   */
+  PageTotal: number;
+
+  /**
+   * The number of results returned.
+   */
+  Results: number;
+
+  /**
+   * The maximum number of results per-page
+   */
+  ResultsPerPage: number;
+
+  /**
+   * The total number of results across all pages.
+   */
+  ResultsTotal: number;
 }
 
 export interface PaginatedResponse<T> {
-  Pagination: {
-    /**
-     * The current page number.
-     */
-    Page: number;
-
-    /**
-     * The next page number.
-     */
-    PageNext: (null|number);
-
-    /**
-     * The previous page number.
-     */
-    PagePrev: (null|number);
-
-    /**
-     * The total number of pages.
-     */
-    PageTotal: number;
-
-    /**
-     * The number of results returned.
-     */
-    Results: number;
-
-    /**
-     * The maximum number of results per-page
-     */
-    ResultsPerPage: number;
-
-    /**
-     * The total number of results across all pages.
-     */
-    ResultsTotal: number;
-  };
+  Pagination: Pagination;
 
   Results: T[];
 }
