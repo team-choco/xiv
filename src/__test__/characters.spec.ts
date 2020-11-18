@@ -181,11 +181,13 @@ describe('Class(Characters)', () => {
       const expectedResponse: Characters.GetApiResponse = {
         Character: {
           Avatar: chance.string(),
+          Portrait: chance.string(),
           ID: chance.integer(),
           Bio: chance.string(),
           Race: chance.integer(),
           Gender: chance.integer(),
           Server: 'Famfrit',
+          Title: chance.integer(),
         },
       };
 
@@ -195,11 +197,13 @@ describe('Class(Characters)', () => {
 
       expect(results).toStrictEqual({
         Avatar: expectedResponse.Character.Avatar,
+        Portrait: expectedResponse.Character.Portrait,
         ID: expectedResponse.Character.ID,
         Bio: expectedResponse.Character.Bio,
         Race: expectedResponse.Character.Race,
         Gender: expectedResponse.Character.Gender,
         Server: expectedResponse.Character.Server,
+        Title: expectedResponse.Character.Title,
       } as Characters.GetResponse);
 
       expect(Fetch).toBeCalledTimes(1);

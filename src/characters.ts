@@ -57,10 +57,12 @@ export class Characters extends Base {
     return {
       ID: response.Character.ID,
       Avatar: response.Character.Avatar,
+      Portrait: response.Character.Portrait,
       Bio: response.Character.Bio,
       Race: response.Character.Race,
       Gender: response.Character.Gender,
       Server: response.Character.Server,
+      Title: response.Character.Title,
     };
   }
 }
@@ -124,7 +126,17 @@ export declare namespace Characters {
   }
 
   interface GetApiResponse {
-    Character: GetResponse;
+    Character: {
+      /**
+       * The Character's Title ID
+       */
+      Title: number;
+
+      /**
+       * The character's portrait url.
+       */
+      Portrait: string;
+    } & GetResponse;
   }
 
   interface GetResponse {
@@ -132,6 +144,11 @@ export declare namespace Characters {
      * The character's avatar url.
      */
     Avatar: string;
+
+    /**
+     * The character's portrait url.
+     */
+    Portrait: string;
 
     /**
      * The character's lodestone id.
@@ -157,5 +174,10 @@ export declare namespace Characters {
      * The character's server.
      */
     Server: Servers;
+
+    /**
+     * The character's title.
+     */
+    Title: number;
   }
 }
