@@ -13,6 +13,26 @@ const characters = new Characters();
 jest.mock('@team-choco/utils');
 
 describe('Class(Characters)', () => {
+  describe('func(isFeminine)', () => {
+    it('should return true if 2 is passed', () => {
+      expect(characters.isFeminine(2)).toEqual(true);
+    });
+
+    it('should return false if any other number is passed', () => {
+      expect(characters.isFeminine(1)).toEqual(false);
+    });
+  });
+
+  describe('func(isMasculine)', () => {
+    it('should return true if 1 is passed', () => {
+      expect(characters.isMasculine(1)).toEqual(true);
+    });
+
+    it('should return false if any other number is passed', () => {
+      expect(characters.isMasculine(2)).toEqual(false);
+    });
+  });
+
   describe('func(search)', () => {
     it('should be powered by xivapi', () => {
       expect(getPoweredBy(characters.search)).toStrictEqual({

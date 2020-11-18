@@ -11,6 +11,25 @@ export class Characters extends Base {
     else if (dataCenter) return `_dc_${dataCenter}`;
     return null;
   }
+
+  /**
+   * Returns true if the character is feminine.
+   *
+   * @param gender - the gender of the character
+   */
+  public isFeminine(gender: number): boolean {
+    return gender === 2;
+  }
+
+  /**
+   * Returns true if the character is masculine.
+   *
+   * @param gender - the gender of the character
+   */
+  public isMasculine(gender: number): boolean {
+    return gender === 1;
+  }
+
   /**
    * Searches for characters given a set of criteria.
    *
