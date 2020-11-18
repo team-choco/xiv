@@ -56,6 +56,8 @@ export class Characters extends Base {
 
     return {
       ID: response.Character.ID,
+      Name: response.Character.Name,
+      Lang: response.Character.Lang,
       Avatar: response.Character.Avatar,
       Portrait: response.Character.Portrait,
       Bio: response.Character.Bio,
@@ -144,6 +146,18 @@ export declare namespace Characters {
      * The character's avatar url.
      */
     Avatar: string;
+
+    /**
+     * The character's name.
+     */
+    Name: string;
+
+    /**
+     * Slash delimited list of the users language.
+     *
+     * @example 'EN/FR'
+     */
+    Lang: string;
 
     /**
      * The character's portrait url.

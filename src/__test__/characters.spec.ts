@@ -180,9 +180,11 @@ describe('Class(Characters)', () => {
     it('should return a specific characters information', async () => {
       const expectedResponse: Characters.GetApiResponse = {
         Character: {
+          ID: chance.integer(),
+          Name: chance.string(),
+          Lang: chance.pickone(['EN', 'FR']),
           Avatar: chance.string(),
           Portrait: chance.string(),
-          ID: chance.integer(),
           Bio: chance.string(),
           Race: chance.integer(),
           Gender: chance.integer(),
@@ -196,9 +198,11 @@ describe('Class(Characters)', () => {
       const results = await characters.get(expectedResponse.Character.ID);
 
       expect(results).toStrictEqual({
+        ID: expectedResponse.Character.ID,
+        Name: expectedResponse.Character.Name,
+        Lang: expectedResponse.Character.Lang,
         Avatar: expectedResponse.Character.Avatar,
         Portrait: expectedResponse.Character.Portrait,
-        ID: expectedResponse.Character.ID,
         Bio: expectedResponse.Character.Bio,
         Race: expectedResponse.Character.Race,
         Gender: expectedResponse.Character.Gender,

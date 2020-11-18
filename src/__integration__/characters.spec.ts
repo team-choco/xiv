@@ -1,6 +1,7 @@
 import { Arrays } from '@team-choco/utils';
 
 import { Characters } from '../characters';
+import { getTypeStructure } from '../__test__/utils/structure';
 
 const characters = new Characters();
 
@@ -16,11 +17,13 @@ describe('Class(Characters)', () => {
 
       const [result] = Results;
 
-      expect(result.Avatar).toBeTruthy();
-      expect(result.ID).toEqual(9933602);
-      expect(result.Name).toEqual('Flora Bunny');
-      expect(result.Lang).toEqual('EN');
-      expect(result.Server).toEqual('Leviathan (Primal)');
+      expect(getTypeStructure(result)).toEqual({
+        ID: 'number',
+        Name: 'string',
+        Lang: 'string',
+        Server: 'string',
+        Avatar: 'string',
+      });
     });
 
     it('should support searching data centers', async () => {
@@ -36,15 +39,21 @@ describe('Class(Characters)', () => {
   });
 
   describe('func(get)', () => {
-    it('should a given character', async () => {
+    it('should return a given character', async () => {
       const character = await characters.get(9933602);
 
-      expect(character.ID).toEqual(9933602);
-      expect(character.Avatar).toBeTruthy();
-      expect(character.Bio).toBeTruthy();
-      expect(character.Race).toEqual(3);
-      expect(character.Gender).toEqual(2);
-      expect(character.Server).toEqual('Leviathan');
+      expect(getTypeStructure(character)).toEqual({
+        ID: 'number',
+        Name: 'string',
+        Lang: null,
+        Race: 'number',
+        Gender: 'number',
+        Title: 'number',
+        Server: 'string',
+        Avatar: 'string',
+        Bio: 'string',
+        Portrait: 'string',
+      });
     });
   });
 });
