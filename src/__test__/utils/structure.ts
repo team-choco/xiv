@@ -1,4 +1,4 @@
-export function getTypeStructure(object?: Object) {
+export function getTypeStructure(object?: { [key: string]: any }): undefined | null | { [key: string]: (undefined|null|string) } {
   if (object === undefined || object === null) return object;
 
   return Object.entries(object).reduce((output, [key, value]) => {
