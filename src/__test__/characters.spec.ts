@@ -1,5 +1,3 @@
-import { Fetch } from '@team-choco/utils';
-
 import { getPoweredBy } from '../decorators/powered-by';
 
 import { Characters } from '../characters';
@@ -52,7 +50,7 @@ describe('Class(Characters)', () => {
         Server: 'Famfrit (Primal)',
       }]);
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      characters.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await characters.search({
         name,
@@ -60,8 +58,8 @@ describe('Class(Characters)', () => {
 
       expect(results).toStrictEqual(expectedResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+      expect(characters.fetch).toBeCalledTimes(1);
+      expect(characters.fetch).toBeCalledWith('/character/search', {
         query: {
           name: name,
           server: null,
@@ -82,7 +80,7 @@ describe('Class(Characters)', () => {
         Server: 'Famfrit (Primal)',
       }]);
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      characters.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await characters.search({
         name: expectedName,
@@ -91,8 +89,8 @@ describe('Class(Characters)', () => {
 
       expect(results).toStrictEqual(expectedResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+      expect(characters.fetch).toBeCalledTimes(1);
+      expect(characters.fetch).toBeCalledWith('/character/search', {
         query: {
           name: expectedName,
           server: expectedServer,
@@ -113,7 +111,7 @@ describe('Class(Characters)', () => {
         Server: 'Famfrit (Primal)',
       }]);
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      characters.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await characters.search({
         name,
@@ -122,8 +120,8 @@ describe('Class(Characters)', () => {
 
       expect(results).toStrictEqual(expectedResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+      expect(characters.fetch).toBeCalledTimes(1);
+      expect(characters.fetch).toBeCalledWith('/character/search', {
         query: {
           name: name,
           server: `_dc_${expectedDataCenter}`,
@@ -144,7 +142,7 @@ describe('Class(Characters)', () => {
         Server: 'Famfrit (Primal)',
       }]);
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      characters.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await characters.search({
         name,
@@ -153,8 +151,8 @@ describe('Class(Characters)', () => {
 
       expect(results).toStrictEqual(expectedResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith('https://xivapi.com/character/search', {
+      expect(characters.fetch).toBeCalledTimes(1);
+      expect(characters.fetch).toBeCalledWith('/character/search', {
         query: {
           name: name,
           server: null,
@@ -176,7 +174,7 @@ describe('Class(Characters)', () => {
 
       const expectedResponse = mockPaginatedResponse(expectedResults);
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(mockPaginatedResponse(expectedResults.map((result) => ({
+      characters.fetch = jest.fn().mockResolvedValue(mockPaginatedResponse(expectedResults.map((result) => ({
         ...result,
         Rank: chance.string(),
       }))));
@@ -213,7 +211,7 @@ describe('Class(Characters)', () => {
         },
       };
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      characters.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await characters.get(expectedResponse.Character.ID);
 
@@ -230,8 +228,8 @@ describe('Class(Characters)', () => {
         Title: expectedResponse.Character.Title,
       } as Characters.GetResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith(`https://xivapi.com/character/${expectedResponse.Character.ID}`);
+      expect(characters.fetch).toBeCalledTimes(1);
+      expect(characters.fetch).toBeCalledWith(`/character/${expectedResponse.Character.ID}`);
     });
   });
 });

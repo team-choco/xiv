@@ -1,5 +1,3 @@
-import { Fetch } from '@team-choco/utils';
-
 import { Base } from './base';
 import { PoweredByXIVAPI } from './decorators/powered-by';
 
@@ -12,7 +10,7 @@ export class Titles extends Base {
    */
   @PoweredByXIVAPI
   async get(id: number): Promise<Titles.GetResponse> {
-    const response = await Fetch<Titles.GetApiResponse>(`https://xivapi.com/Title/${id}`);
+    const response = await this.fetch<Titles.GetApiResponse>(`/Title/${id}`);
 
     return {
       ID: response.ID,

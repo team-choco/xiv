@@ -39,7 +39,7 @@ export class Characters extends Base {
   @PoweredByXIVAPI
   async search(options: Characters.SearchOptions): Promise<Characters.SearchResponse> {
 
-    const response = await Fetch<Characters.SearchResponse>('https://xivapi.com/character/search', {
+    const response = await this.fetch<Characters.SearchResponse>('/character/search', {
       query: {
         name: options.name,
         server: this.server(options.server, options.dataCenter),
@@ -71,7 +71,7 @@ export class Characters extends Base {
    */
   @PoweredByXIVAPI
   async get(id: number): Promise<Characters.GetResponse> {
-    const response = await Fetch<Characters.GetApiResponse>(`https://xivapi.com/character/${id}`);
+    const response = await this.fetch<Characters.GetApiResponse>(`/character/${id}`);
 
     return {
       ID: response.Character.ID,

@@ -3,14 +3,16 @@ import { Arrays } from '@team-choco/utils';
 import { Characters } from '../characters';
 import { getTypeStructure } from '../__test__/utils/structure';
 
-const characters = new Characters();
+const characters = new Characters({
+  staging: true,
+});
 
 describe('Class(Characters)', () => {
   describe('func(search)', () => {
     it('should return a list of characters', async () => {
       const { Results } = await characters.search({
-        name: 'Flora Bunny',
-        server: 'Leviathan',
+        name: 'Cecilia Sanare',
+        server: 'Famfrit',
       });
 
       expect(Results).toHaveLength(1);
@@ -28,7 +30,7 @@ describe('Class(Characters)', () => {
 
     it('should support searching data centers', async () => {
       const { Results } = await characters.search({
-        name: 'Bunny',
+        name: 'Cecilia Sanare',
         dataCenter: 'Primal',
       });
 

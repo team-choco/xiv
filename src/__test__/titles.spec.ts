@@ -1,5 +1,3 @@
-import { Fetch } from '@team-choco/utils';
-
 import { getPoweredBy } from '../decorators/powered-by';
 
 import { Titles } from '../titles';
@@ -34,7 +32,7 @@ describe('Class(Characters)', () => {
         NameFemale_ja: chance.string(),
       };
 
-      (Fetch as jest.MockedFunction<typeof Fetch>).mockResolvedValue(expectedResponse);
+      titles.fetch = jest.fn().mockResolvedValue(expectedResponse);
 
       const results = await titles.get(expectedResponse.ID);
 
@@ -45,8 +43,8 @@ describe('Class(Characters)', () => {
         NameFeminine: expectedResponse.NameFemale,
       } as Titles.GetResponse);
 
-      expect(Fetch).toBeCalledTimes(1);
-      expect(Fetch).toBeCalledWith(`https://xivapi.com/Title/${expectedResponse.ID}`);
+      expect(titles.fetch).toBeCalledTimes(1);
+      expect(titles.fetch).toBeCalledWith(`/Title/${expectedResponse.ID}`);
     });
   });
 });

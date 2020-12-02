@@ -1,6 +1,8 @@
 import { Titles } from '../titles';
 
-const titles = new Titles();
+const titles = new Titles({
+  staging: true,
+});
 
 describe('Class(Titles)', () => {
   describe('func(get)', () => {

@@ -5,6 +5,11 @@ export interface XIVOptions {
    * @see https://xivapi.com
    */
   xivapi?: (null|string);
+
+  /**
+   * Whether the staging environment should be used.
+   */
+  staging?: boolean;
 }
 
 export interface Pagination {
